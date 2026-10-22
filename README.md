@@ -1,10 +1,8 @@
-# HomeHub 🏠
+# HomeHub (Django)
 
-A simple Flask home server for watching videos and managing files on your local network.
+A small home server for browsing and streaming videos and managing shared files on your local network.
 
-## Getting started
-
-**1. Install the dependencies**
+## 1. Install
 
 ```bash
 python3 -m venv .venv
@@ -12,40 +10,36 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-**2. Create an admin account**
+On Windows, activate with:
 
-```bash
-python app.py create-admin
+```powershell
+.venv\Scripts\Activate.ps1
 ```
 
-Choose a username and a password of at least 12 characters.
-
-**3. Start HomeHub**
+## 2. Create an administrator
 
 ```bash
-python app.py
+python manage.py migrate
+python manage.py createsuperuser
 ```
 
-Open **http://127.0.0.1:8000** on the server, or **http://SERVER-LAN-IP:8000** from another device on your home network.
+## 3. Start HomeHub
 
-## What you can do
+```bash
+python manage.py runserver 0.0.0.0:8000
+```
 
-- 🎬 Browse videos in list or grid view.
-- ▶️ Play a folder, including videos in subfolders, shuffle, and manage the playback queue.
-- 📁 Upload, download, organize, copy, move, rename, and delete shared files.
-- 🔐 Keep your content private with login-protected pages and admin-created accounts.
+Open `http://127.0.0.1:8000/` on the server, or `http://SERVER-LAN-IP:8000/` from another device on your home network.
 
-## Where your files go
+## Where files go
 
-- `movies/` — your video library.
-- `storage/shared/` — files managed through HomeHub.
-- `instance/` — your database and secret key. Keep this folder private.
+- `movies/` — video library.
+- `storage/shared/` — shared files.
+- `db.sqlite3` — local database.
 
-You can use different directories by setting `HOMEHUB_MOVIES` and `HOMEHUB_SHARED` before starting the app.
+Set `HOMEHUB_MOVIES` or `HOMEHUB_SHARED` environment variables to use different directories.
 
-## A few tips
+## Notes
 
-- Use HomeHub only on a trusted home network. **Don't expose the development server directly to the internet.**
-- MP4 videos are generally the most browser-friendly. Some MKV and AVI files may not play.
-- Deleted files and folders cannot be recovered through HomeHub.
-- Playlists are temporary and aren't saved between sessions.
+- MKV/AVI support varies by browser.
+- Deleting files is permanent; there is no recycle bin.

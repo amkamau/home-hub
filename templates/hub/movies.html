@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Videos · HomeHub{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>Video library</h1><p>Browse your movie folders and play videos.</p></div>
+<div class="actions"><a class="button secondary" href="{% url 'playlist' %}?path={{ current_path|urlencode }}">Play folder</a><a class="button secondary" href="{% url 'playlist' %}?path={{ current_path|urlencode }}&shuffle=1">Shuffle</a></div></div>
+<div class="breadcrumbs"><a href="{% url 'movies' %}">Movies</a>{% for crumb in breadcrumbs %}<span> / </span><a href="{% url 'movies' %}?path={{ crumb.path|urlencode }}">{{ crumb.name }}</a>{% endfor %}</div>
+<div class="toolbar">
+  {% if current_path %}<a href="{% url 'movies' %}?path={{ parent_path|urlencode }}">← Parent folder</a>{% endif %}
+  <div><a href="?path={{ current_path|urlencode }}&view=grid">Grid</a> · <a href="?path={{ current_path|urlencode }}&view=list">List</a></div>
+</div>
+{% if view == "list" %}<div class="file-list">
+{% for item in entries %}
+<div class="file-row"><span>{% if item.is_dir %}📁{% elif item.is_video %}🎬{% else %}📄{% endif %}</span>
+{% if item.is_dir %}<a href="{% url 'movies' %}?path={{ item.relative|urlencode }}">{{ item.name }}</a>
+{% elif item.is_video %}<a href="{% url 'play_video' item.relative %}">{{ item.name }}</a>{% else %}<span>{{ item.name }}</span>{% endif %}
+</div>{% empty %}<p class="empty">This folder is empty.</p>{% endfor %}</div>
+{% else %}<div class="grid">
+{% for item in entries %}
+<article class="tile">
+<div class="tile-icon">{% if item.is_dir %}📁{% elif item.is_video %}🎬{% else %}📄{% endif %}</div>
+{% if item.is_dir %}<a class="tile-name" href="{% url 'movies' %}?path={{ item.relative|urlencode }}">{{ item.name }}</a>
+{% elif item.is_video %}<a class="tile-name" href="{% url 'play_video' item.relative %}">{{ item.name }}</a>
+{% else %}<span class="tile-name">{{ item.name }}</span>{% endif %}
+</article>
+{% empty %}<p class="empty">No videos yet. Add files to the movies folder.</p>{% endfor %}
+</div>{% endif %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Playlist · HomeHub{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>Folder playlist</h1><p>{{ videos|length }} video(s) found in this folder and its subfolders.</p></div><a class="button secondary" href="{% url 'movies' %}?path={{ folder|urlencode }}">Back to library</a></div>
+{% if videos %}
+<div class="player-wrap"><video id="player" controls autoplay playsinline></video><h2 id="now-playing">Choose a video</h2></div>
+<div class="file-list playlist">{% for video in videos %}<button class="playlist-item" data-src="{% url 'play_video' video.relative %}" data-name="{{ video.name|escape }}">{{ forloop.counter }}. {{ video.name }}</button>{% endfor %}</div>
+<script>
+const items = Array.from(document.querySelectorAll('.playlist-item'));
+const player = document.getElementById('player');
+const label = document.getElementById('now-playing');
+let index = 0;
+function playAt(i) { if (!items.length) return; index = (i + items.length) % items.length; player.src = items[index].dataset.src; label.textContent = items[index].dataset.name; items.forEach((el,j)=>el.classList.toggle('selected',j===index)); player.play().catch(()=>{}); }
+items.forEach((el,i)=>el.addEventListener('click',()=>playAt(i)));
+player.addEventListener('ended',()=>playAt(index+1));
+playAt(0);
+</script>
+{% else %}<p class="empty">No supported video files found in this folder.</p>{% endif %}
+{% endblock %}
