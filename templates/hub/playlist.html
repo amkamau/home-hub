@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Playlist · HomeHub{% endblock %}
 {% block content %}
-<div class="page-heading"><div><h1>Folder playlist</h1><p>{{ videos|length }} video(s) found in this folder and its subfolders.</p></div><a class="button secondary" href="{% url 'movies' %}?path={{ folder|urlencode }}">Back to library</a></div>
+<div class="page-heading"><div><h1>Folder playlist</h1><p>{{ videos|length }} video(s) found in this folder and its subfolders.</p></div><a class="button secondary" href="{% url 'media' %}?path={{ folder|urlencode }}">Back to library</a></div>
 {% if videos %}
 <div class="player-wrap"><video id="player" controls autoplay playsinline></video><h2 id="now-playing">Choose a video</h2></div>
 <div class="file-list playlist">{% for video in videos %}<button class="playlist-item" data-src="{% url 'play_video' video.relative %}" data-name="{{ video.name|escape }}">{{ forloop.counter }}. {{ video.name }}</button>{% endfor %}</div>

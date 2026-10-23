@@ -20,20 +20,39 @@ INSTALLED_APPS = [
     "hub",
 ]
 
+
+# JAZZMIN_SETTINGS = {
+#     "site_title": "Homehub",
+#     "site_header": "Homehub",
+#     "site_brand": "Homehub",
+#     "welcome_sign": "Welcome to Homehub",
+#     "copyright": "Homehub",
+
+#     "show_sidebar": False,
+#     "navigation_expanded": True,
+#     # "show_ui_builder": True,
+
 JAZZMIN_SETTINGS = {
     "site_title": "Homehub Admin",
     "site_header": "Homehub",
     "site_brand": "Homehub",
-    "welcome_sign": "Welcome to Homehub",
-    "copyright": "Homehub",
+    "site_url": "/",
 
     "show_sidebar": True,
-    "navigation_expanded": True,
-    "show_ui_builder": True,
-
-    "order_with_respect_to": [
-        "auth",
+    "topmenu_links": [
+        {
+            "name": "HomeHub",
+            "url": "/",
+            "new_window": False,
+        },
+        {
+            "name": "Admin Dashboard",
+            "url": "/admin/",
+            "new_window": False,
+        },
     ],
+
+    "order_with_respect_to": ["auth"],
 
     "icons": {
         "auth": "fas fa-users-cog",
@@ -42,6 +61,7 @@ JAZZMIN_SETTINGS = {
     },
 
     "theme": "default",
+    "custom_css": "css/admin.css",
 }
 
 MIDDLEWARE = [
@@ -92,10 +112,10 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "movies"
+LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "login"
 
-MOVIES_ROOT = Path(os.environ.get("HOMEHUB_MOVIES", BASE_DIR / "movies")).resolve()
+MEDIA_ROOT = Path(os.environ.get("HOMEHUB_MOVIES", BASE_DIR / "media")).resolve()
 SHARED_ROOT = Path(os.environ.get("HOMEHUB_SHARED", BASE_DIR / "storage" / "shared")).resolve()
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
 DATA_UPLOAD_MAX_MEMORY_SIZE = None

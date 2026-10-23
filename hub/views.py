@@ -34,21 +34,76 @@ def _relative(root: Path, path: Path) -> str:
 
 
 def _ensure_roots():
-    settings.MOVIES_ROOT.mkdir(parents=True, exist_ok=True)
+    settings.MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
     settings.SHARED_ROOT.mkdir(parents=True, exist_ok=True)
+
+@login_required
+def home(request):
+    return render(request, "hub/home.html")
+
+# @login_required
+# def home(request):
+#     _ensure_roots()
+
+#     current_rel = request.GET.get("path", "")
+#     current = _safe_path(settings.MEDIA_ROOT, current_rel)
+
+#     if not current.exists() or not current.is_dir():
+#         raise Http404("Folder not found")
+
+#     entries = []
+#     for item in sorted(
+#         current.iterdir(),
+#         key=lambda p: (p.is_file(), p.name.lower())
+#     ):
+#         rel = _relative(settings.MEDIA_ROOT, item)
+#         entries.append({
+#             "name": item.name,
+#             "relative": rel,
+#             "is_dir": item.is_dir(),
+#             "is_video": (
+#                 item.is_file()
+#                 and item.suffix.lower() in VIDEO_EXTENSIONS
+#             ),
+#             "size": item.stat().st_size if item.is_file() else None,
+#         })
+
+#     parent = PurePosixPath(current_rel).parent.as_posix()
+#     if parent == ".":
+#         parent = ""
+
+#     breadcrumbs = []
+#     accumulated = []
+
+#     for part in PurePosixPath(current_rel).parts:
+#         if part in ("", ".", "/"):
+#             continue
+#         accumulated.append(part)
+#         breadcrumbs.append({
+#             "name": part,
+#             "path": "/".join(accumulated),
+#         })
+
+#     return render(request, "hub/media.html", {
+#         "entries": entries,
+#         "current_path": current_rel,
+#         "parent_path": parent,
+#         "breadcrumbs": breadcrumbs,
+#         "view": request.GET.get("view", "grid"),
+#     })
 
 
 @login_required
-def movies(request):
+def media(request):
     _ensure_roots()
     current_rel = request.GET.get("path", "")
-    current = _safe_path(settings.MOVIES_ROOT, current_rel)
+    current = _safe_path(settings.MEDIA_ROOT, current_rel)
     if not current.exists() or not current.is_dir():
         raise Http404("Folder not found")
 
     entries = []
     for item in sorted(current.iterdir(), key=lambda p: (p.is_file(), p.name.lower())):
-        rel = _relative(settings.MOVIES_ROOT, item)
+        rel = _relative(settings.MEDIA_ROOT, item)
         entries.append({
             "name": item.name,
             "relative": rel,
@@ -68,7 +123,7 @@ def movies(request):
         accumulated.append(part)
         breadcrumbs.append({"name": part, "path": "/".join(accumulated)})
 
-    return render(request, "hub/movies.html", {
+    return render(request, "hub/media.html", {
         "entries": entries, "current_path": current_rel, "parent_path": parent,
         "breadcrumbs": breadcrumbs, "view": request.GET.get("view", "grid"),
     })
@@ -128,7 +183,7 @@ def _stream_file_range(request, path: Path):
 
 @login_required
 def play_video(request, relative_path):
-    path = _safe_path(settings.MOVIES_ROOT, relative_path)
+    path = _safe_path(settings.MEDIA_ROOT, relative_path)
     if not path.is_file() or path.suffix.lower() not in VIDEO_EXTENSIONS:
         raise Http404("Video not found")
     return _stream_file_range(request, path)
@@ -138,7 +193,7 @@ def play_video(request, relative_path):
 def playlist(request):
     _ensure_roots()
     folder_rel = request.GET.get("path", "")
-    folder = _safe_path(settings.MOVIES_ROOT, folder_rel)
+    folder = _safe_path(settings.MEDIA_ROOT, folder_rel)
     if not folder.is_dir():
         raise Http404("Folder not found")
     videos = []
@@ -146,7 +201,7 @@ def playlist(request):
     iterator = folder.rglob("*") if recursive else folder.iterdir()
     for item in iterator:
         if item.is_file() and item.suffix.lower() in VIDEO_EXTENSIONS:
-            videos.append({"name": item.name, "relative": _relative(settings.MOVIES_ROOT, item)})
+            videos.append({"name": item.name, "relative": _relative(settings.MEDIA_ROOT, item)})
     if request.GET.get("shuffle") == "1":
         random.shuffle(videos)
     return render(request, "hub/playlist.html", {"videos": videos, "folder": folder_rel})

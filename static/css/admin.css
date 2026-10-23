@@ -1,0 +1,112 @@
+
+/* HomeHub admin — match the main website */
+
+body {
+    background: #f5f7fb;
+    color: #182230;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+}
+
+/* Top navigation */
+.main-header .navbar {
+    background: #172338 !important;
+}
+
+/* Brand */
+.brand-link {
+    background: #172338 !important;
+    color: #fff !important;
+    font-weight: 750;
+}
+
+/* Sidebar */
+.main-sidebar {
+    background: #172338 !important;
+}
+
+.sidebar a {
+    color: #dce5f4 !important;
+}
+
+.sidebar .nav-link.active {
+    background: #315bd6 !important;
+    color: #fff !important;
+    border-radius: 8px;
+}
+
+/* Main content area */
+.content-wrapper {
+    background: #f5f7fb !important;
+}
+
+/* Cards and admin forms */
+.card,
+.module,
+.inline-group {
+    background: #fff;
+    border: 1px solid #e1e6ef;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px #17233808;
+    overflow: hidden;
+}
+
+.card-header {
+    background: #fff;
+    border-bottom: 1px solid #edf0f5;
+}
+
+/* Primary buttons */
+.btn-primary,
+input[type="submit"].default,
+.submit-row input.default {
+    background: #315bd6 !important;
+    border-color: #315bd6 !important;
+    border-radius: 8px;
+}
+
+/* Form fields */
+.form-control,
+select,
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    border-color: #cbd3df;
+    border-radius: 8px;
+}
+
+.form-control:focus {
+    border-color: #315bd6;
+    box-shadow: 0 0 0 0.15rem #315bd626;
+}
+
+/* Tables */
+.table thead th {
+    background: #f5f7fb;
+    color: #233047;
+}
+
+.table td,
+.table th {
+    border-color: #edf0f5;
+}
+
+/* Links */
+a {
+    color: #315bd6;
+}
+
+a:hover {
+    color: #2349b5;
+}
+
+/* Responsive spacing */
+.content {
+    padding-top: 20px;
+}
+
+@media (max-width: 650px) {
+    .content {
+        padding: 12px;
+    }
+}
