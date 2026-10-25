@@ -31,15 +31,6 @@ python manage.py runserver 0.0.0.0:8000
 
 Open `http://127.0.0.1:8000/` on the server, or `http://SERVER-LAN-IP:8000/` from another device on your home network.
 
-## Where files go
-
-- `movies/` — video library.
-- `storage/shared/` — shared files.
-- `db.sqlite3` — local database.
-
-Set `HOMEHUB_MOVIES` or `HOMEHUB_SHARED` environment variables to use different directories.
-
 ## Notes
-
 - MKV/AVI support varies by browser.
 - Deleting files is permanent; there is no recycle bin.
